@@ -1,0 +1,49 @@
+const { Router } = require("express");
+const User = require("../models/user");
+
+const router = Router();
+
+// Route to render the sign-in page
+router.get("/signin", (req, res) => {
+    return res.render("signin");
+});
+
+// Route to render the sign-up page
+router.get("/signup", (req, res) => {
+    return res.render("signup");
+});
+
+// Route to handle user sign-in
+router.post("/signin", async (req, res) => {
+    const { email, password } = req.body;
+
+    try {
+        // Validate user credentials and generate a token
+        const token = await User.matchPasswordAndGenerateToken(email, password);
+
+        // Set token in cookies and redirect to the home page
+        return res.cookie("token", token).redirect("/");
+    } catch (error) {
+        // Render the sign-in page with an error message if authentication fails
+        return res.render("signin", {
+            error: "Incorrect email or password",
+        });
+    }
+});
+
+// Route to handle user sign-up
+router.post("/signup", async (req, res) => {
+    const { fullname, email, password } = req.body;
+
+    // Create a new user in the database
+    await User.create({
+        fullname,
+        email,
+        password,
+    });
+
+    // Redirect to the home page after successful sign-up
+    return res.redirect("/");
+});
+
+module.exports = router;
