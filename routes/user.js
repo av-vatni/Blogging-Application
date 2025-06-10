@@ -31,19 +31,29 @@ router.post("/signin", async (req, res) => {
     }
 });
 
+router.get('/logout', (req, res)=>{
+    res.clearCookie("token").redirect("/")
+})
+
 // Route to handle user sign-up
 router.post("/signup", async (req, res) => {
     const { fullname, email, password } = req.body;
 
-    // Create a new user in the database
-    await User.create({
-        fullname,
-        email,
-        password,
-    });
+    try {
+        await User.create({
+            fullname,
+            email,
+            password,
+        });
 
-    // Redirect to the home page after successful sign-up
-    return res.redirect("/");
+        return res.redirect("/");
+    } catch (error) {
+        // Render the sign-up page with an error message if creation fails
+        return res.render("signup", {
+            error: error.message || "Error creating user",
+        });
+    }
 });
+
 
 module.exports = router;

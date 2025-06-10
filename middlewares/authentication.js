@@ -1,18 +1,25 @@
-function checkForAuthenticationCookie(cookieName){
-    return (req, res, next) => {
-        const tokenCookieValue = req.cookies[cookieName];
-        if(!tokenCookieValue){
-            next();
-        }
-        
-        try {
-            const userPayload = validateToken(tokenCookieValue);
-            req.user = userPayload;
+const jwt = require("jsonwebtoken");
+const User = require("../models/user");
+
+function checkForAuthenticationCookie(cookieName) {
+    return async (req, res, next) => {
+        const token = req.cookies[cookieName];
+        if (!token) {
+            req.user = null;
+            res.locals.user = null;
             return next();
-        } catch (error) {}
-        return next();
- }
+        }
+        try {
+            const payload = jwt.verify(token, "secret"); // Use your JWT secret
+            const user = await User.findById(payload._id);
+            req.user = user;
+            res.locals.user = user; // <-- This line is important!
+        } catch (e) {
+            req.user = null;
+            res.locals.user = null;
+        }
+        next();
+    };
 }
-module.exports = {
-    checkForAuthenticationCookie,
-};
+
+module.exports = { checkForAuthenticationCookie };
