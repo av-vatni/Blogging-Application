@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('./partials/head') %>
+    <title>Edit Blog - Blogify</title>
+</head>
+<body>
+    <%- include('./partials/nav') %>
+    
+    <div class="container mt-4">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h3 class="mb-0">Edit Blog Post</h3>
+                        <a href="/blog/<%= blog._id %>" class="btn btn-outline-secondary btn-sm">View Blog</a>
+                    </div>
+                    <div class="card-body">
+                        <% if (locals.error) { %>
+                            <div class="alert alert-danger" role="alert">
+                                <%= error %>
+                            </div>
+                        <% } %>
+                        
+                        <form action="/blog/edit/<%= blog._id %>" method="post">
+                            <div class="mb-3">
+                                <label for="title" class="form-label">Blog Title *</label>
+                                <input 
+                                    type="text" 
+                                    class="form-control" 
+                                    id="title" 
+                                    name="title" 
+                                    placeholder="Enter your blog title"
+                                    value="<%= blog.title %>"
+                                    required
+                                >
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="coverImage" class="form-label">Cover Image URL (Optional)</label>
+                                <input 
+                                    type="url" 
+                                    class="form-control" 
+                                    id="coverImage" 
+                                    name="coverImage" 
+                                    placeholder="https://example.com/image.jpg"
+                                    value="<%= blog.coverImage || '' %>"
+                                >
+                                <div class="form-text">Provide a URL for the blog cover image</div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="body" class="form-label">Blog Content *</label>
+                                <textarea 
+                                    class="form-control" 
+                                    id="body" 
+                                    name="body" 
+                                    rows="12" 
+                                    placeholder="Write your blog content here..."
+                                    required
+                                ><%= blog.body %></textarea>
+                            </div>
+                            
+                            <div class="d-flex gap-2">
+                                <button type="submit" class="btn btn-primary">Update Blog</button>
+                                <a href="/blog/<%= blog._id %>" class="btn btn-secondary">Cancel</a>
+                                <a href="/" class="btn btn-outline-secondary">Back to Home</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <%- include('./partials/scripts') %>
+</body>
+</html>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <%- include('./partials/head') %>
+  <title>My Profile</title>
+  <style>
+    .profile-card { max-width: 860px; margin: 0 auto; }
+    .avatar { width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 3px solid #fff; box-shadow: 0 4px 16px rgba(0,0,0,0.12); }
+    .file-input { display:none; }
+    .upload-label { cursor: pointer; }
+  </style>
+  </head>
+<body>
+  <%- include('./partials/nav') %>
+
+  <div class="container mt-4">
+    <% if (locals.error) { %>
+      <div class="alert alert-danger" role="alert"><%= error %></div>
+    <% } %>
+    <% if (locals.success) { %>
+      <div class="alert alert-success" role="alert"><%= success %></div>
+    <% } %>
+
+    <div class="card shadow-sm profile-card">
+      <div class="card-header bg-dark text-white">
+        <h5 class="mb-0"><i class="bi bi-person-circle me-2"></i> Account Profile</h5>
+      </div>
+      <div class="card-body">
+        <div class="d-flex align-items-center gap-3 mb-4">
+          <img id="avatarPreview" src="<%= (user && user.profileImageURL) ? user.profileImageURL : '/images/default.png' %>" alt="Avatar" class="avatar">
+          <div>
+            <label class="btn btn-outline-secondary upload-label mb-2">
+              <i class="bi bi-upload me-2"></i>Change Photo
+              <input id="profileImage" type="file" name="profileImage" accept="image/*" class="file-input" form="profileForm">
+            </label>
+            <div class="text-muted small">PNG, JPG, GIF up to 5MB</div>
+          </div>
+        </div>
+
+        <form id="profileForm" action="/user/profile" method="post" enctype="multipart/form-data">
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label">Full name</label>
+              <input type="text" class="form-control" name="fullname" value="<%= user ? user.fullname : '' %>" required>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Email</label>
+              <input type="email" class="form-control" name="email" value="<%= user ? user.email : '' %>" required>
+            </div>
+          </div>
+
+          <div class="d-flex justify-content-end mt-4">
+            <button type="submit" class="btn btn-primary">
+              <i class="bi bi-check2-circle me-1"></i> Save Changes
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <%- include('./partials/scripts') %>
+  <script>
+    const input = document.getElementById('profileImage');
+    const preview = document.getElementById('avatarPreview');
+    if (input && preview) {
+      input.addEventListener('change', function () {
+        const file = this.files && this.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = e => { preview.src = e.target.result; };
+        reader.readAsDataURL(file);
+      });
+    }
+  </script>
+</body>
+</html>

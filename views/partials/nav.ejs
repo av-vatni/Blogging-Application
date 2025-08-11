@@ -3,7 +3,7 @@
   data-bs-theme="dark"
 >
   <div class="container-fluid">
-    <a class="navbar-brand" href="#">Blogify</a>
+    <a class="navbar-brand" href="/">Blogify</a>
     <button
       class="navbar-toggler"
       type="button"
@@ -16,34 +16,48 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNavDropdown">
-      <ul class="navbar-nav">
+      <ul class="navbar-nav me-auto">
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="#">Home</a>
+          <a class="nav-link" href="/">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/blog">All Blogs</a>
         </li>
         <% if (locals.user) { %>
         <li class="nav-item">
           <a class="nav-link" href="/blog/add-new">Add Blog</a>
         </li>
+        <% } %>
+      </ul>
+      
+      <ul class="navbar-nav">
+        <% if (locals.user) { %>
         <li class="nav-item dropdown">
           <a
-            class="nav-link dropdown-toggle"
+            class="nav-link dropdown-toggle d-flex align-items-center"
             href="#"
             role="button"
             data-bs-toggle="dropdown"
             aria-expanded="false"
           >
-            Piyush Garg
+            <% if (user.profileImageURL) { %>
+              <img src="<%= user.profileImageURL %>" alt="Profile" class="rounded-circle me-2" style="width: 32px; height: 32px; object-fit: cover;">
+            <% } %>
+            <%= user.fullname %>
           </a>
-          <ul class="dropdown-menu">
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li><h6 class="dropdown-header">Account</h6></li>
+            <li><a class="dropdown-item" href="/user/profile">Profile</a></li>
+            <li><hr class="dropdown-divider"></li>
             <li><a class="dropdown-item" href="/user/logout">Logout</a></li>
           </ul>
         </li>
-        <% } else {%>
+        <% } else { %>
         <li class="nav-item">
           <a class="nav-link" href="/user/signup">Create Account</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/user/signin">Signin</a>
+          <a class="nav-link" href="/user/signin">Sign In</a>
         </li>
         <% } %>
       </ul>

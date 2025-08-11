@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('./partials/head') %>
+    <title>Add New Blog</title>
+  </head>
+  <body>
+    <%- include('./partials/nav') %>
+    
+    <div class="container mt-4">
+      <div class="row justify-content-center">
+        <div class="col-md-8">
+          <div class="card">
+            <div class="card-header">
+              <h3 class="mb-0">Create New Blog Post</h3>
+            </div>
+            <div class="card-body">
+              <% if (locals.error) { %>
+                <div class="alert alert-danger" role="alert">
+                  <%= error %>
+                </div>
+              <% } %>
+              
+              <form action="/blog/add-new" method="post">
+                <div class="mb-3">
+                  <label for="title" class="form-label">Blog Title *</label>
+                  <input 
+                    type="text" 
+                    class="form-control" 
+                    id="title" 
+                    name="title" 
+                    placeholder="Enter your blog title"
+                    value="<%= locals.formData ? formData.title : '' %>"
+                    required
+                  >
+                </div>
+                
+                <div class="mb-3">
+                  <label for="coverImage" class="form-label">Cover Image URL (Optional)</label>
+                  <input 
+                    type="url" 
+                    class="form-control" 
+                    id="coverImage" 
+                    name="coverImage" 
+                    placeholder="https://example.com/image.jpg"
+                    value="<%= locals.formData ? formData.coverImage : '' %>"
+                  >
+                  <div class="form-text">Provide a URL for the blog cover image</div>
+                </div>
+                
+                <div class="mb-3">
+                  <label for="body" class="form-label">Blog Content *</label>
+                  <textarea 
+                    class="form-control" 
+                    id="body" 
+                    name="body" 
+                    rows="10" 
+                    placeholder="Write your blog content here..."
+                    required
+                  ><%= locals.formData ? formData.body : '' %></textarea>
+                </div>
+                
+                <div class="d-flex gap-2">
+                  <button type="submit" class="btn btn-primary">Publish Blog</button>
+                  <a href="/" class="btn btn-secondary">Cancel</a>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <%- include('./partials/scripts') %>
+  </body>
+</html>

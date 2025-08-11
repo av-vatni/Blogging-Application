@@ -1,5 +1,4 @@
 const JWT = require('jsonwebtoken'); // Import JSON Web Token library for token creation and verification
-const { validate } = require('../models/user'); // Import user validation logic (not used in this file)
 
 const secret = "@v@14321"; // Secret key used for signing and verifying tokens
 
