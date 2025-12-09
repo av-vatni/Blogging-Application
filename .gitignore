@@ -1,0 +1,59 @@
+# Dependencies
+node_modules/
+package-lock.json
+yarn.lock
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+*.sublime-project
+*.sublime-workspace
+
+# OS files
+Thumbs.db
+.DS_Store
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Build and dist
+dist/
+build/
+
+# Test coverage
+coverage/
+.nyc_output/
+
+# Temporary files
+tmp/
+temp/
+
+# Config example (keep config.example.js, ignore local config)
+config.js
+
+# User uploads (if any)
+public/images/profiles/
+public/images/profiles/*
+!public/images/profiles/.gitkeep
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+docker/*.log
+*.pid
