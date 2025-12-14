@@ -4,7 +4,7 @@ const User = require("../../models/user");
 describe("User Model - Password Hashing", () => {
 
   beforeAll(async () => {
-    await mongoose.connect(MONGO_URL, {
+    await mongoose.connect(process.env.MONGO_URL, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
