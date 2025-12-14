@@ -4,7 +4,7 @@ const Blog = require("../../models/blog");
 describe("Blog Model - Validation Rules", () => {
 
   beforeAll(async () => {
-    await mongoose.connect("mongodb://127.0.0.1:27017/test_blogs", {
+    await mongoose.connect(MONGO_URL, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });

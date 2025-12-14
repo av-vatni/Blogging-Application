@@ -1,3 +1,5 @@
+process.env.JWT_SECRET = "test-secret";
+
 const { createTokenForUser, validateToken } = require("../../services/authentication");
 
 describe("JWT Authentication Service", () => {
