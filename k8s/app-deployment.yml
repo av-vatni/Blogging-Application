@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: blogify-app
+  namespace: blogify-dev
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: blogify-app
+  template:
+    metadata:
+      labels:
+        app: blogify-app
+    spec: 
+      containers:
+        - name: blogify-app
+          image: avvatni/bloggingapplication-app:latest
+          ports: 
+            - containerPort: 8000
+          env:
+            - name: NODE_ENV
+              value: "production"
+            - name: PORT
+              value: "8000"
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: blogify-secrets
+                  key: JWT_SECRET
+            - name: MONGO_URL
+              valueFrom:
+                secretKeyRef:
+                  name: blogify-secrets
+                  key: MONGO_URL  
