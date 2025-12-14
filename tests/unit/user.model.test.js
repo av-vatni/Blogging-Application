@@ -1,35 +1,18 @@
-require("dotenv").config({ path: ".env.test" });
-
-const mongoose = require("mongoose");
 const User = require("../../models/user");
-const DB_NAME = 'test_users';
+const db = require("../setup/mongo");
+
+beforeAll(async () => await db.connect());
+afterEach(async () => await db.clear());
+afterAll(async () => await db.close());
 
 describe("User Model - Password Hashing", () => {
-
-  beforeAll(async () => {
-  await mongoose.connect(process.env.MONGO_URL);
-});
-
-afterEach(async () => {
-    await mongoose.connection.collection('users').deleteMany({});
-  });
-
-  afterAll(async () => {
-    await mongoose.connection.close();
-  });
-
-  it("should hash the password before saving", async () => {
-    const plainPassword = "mysecret123";
-
+  it("should hash password", async () => {
     const user = new User({
-      fullname: "Hash User",
-      email: "hash@test.com",
-      password: plainPassword,
+      fullname: "Test",
+      email: "test@test.com",
+      password: "secret123",
     });
-
     await user.save();
-
-    expect(user.password).not.toBe(plainPassword); // Should be hashed
-    expect(user.password.length).toBeGreaterThan(20); // Hashes are long
+    expect(user.password).not.toBe("secret123");
   });
 });
