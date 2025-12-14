@@ -1,5 +1,10 @@
 pipeline{
     agent any
+    
+    tools {
+        nodejs 'node20'
+    }
+
     environment{
         IMAGE_NAME = "avvatni/bloggingapplication-app"
         DOCKERHUB_CREDS = credentials('dockerhub-creds-id')
