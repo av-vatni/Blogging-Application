@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/user");
 
 // Use the same secret as in services/authentication.js
-const JWT_SECRET = "@v@14321";
+const JWT_SECRET = process.env.JWT_SECRET;
 
 function checkForAuthenticationCookie(cookieName) {
     return async (req, res, next) => {

@@ -26,6 +26,7 @@ app.use(express.json()); // Add JSON parsing for API endpoints
 app.use(cookieParser());
 app.use(checkForAuthenticationCookie("token"));
 app.use(express.static(path.resolve("./public")));
+app.use(checkForAuthenticationCookie("token"));
 
 // Global middleware to make user available to all views
 app.use((req, res, next) => {
