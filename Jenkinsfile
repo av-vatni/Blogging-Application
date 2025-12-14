@@ -1,6 +1,6 @@
 pipeline{
     agent any
-    
+
     tools {
         nodejs 'node20'
     }
@@ -10,7 +10,7 @@ pipeline{
         DOCKERHUB_CREDS = credentials('dockerhub-creds-id')
         NODE_ENV = "test"
 
-        MONGO_URI = credentials('MONGO_URL')
+        MONGO_URL = credentials('MONGO_URL')
         JWT_SECRET = credentials('jwt-secret-id')
     }
     stages{
