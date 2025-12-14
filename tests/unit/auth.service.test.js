@@ -1,3 +1,4 @@
+require("dotenv").config({ path: ".env.test" });
 process.env.JWT_SECRET = "test-secret";
 
 const { createTokenForUser, validateToken } = require("../../services/authentication");

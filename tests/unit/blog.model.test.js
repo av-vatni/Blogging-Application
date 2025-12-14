@@ -1,3 +1,5 @@
+require("dotenv").config({ path: ".env.test" });
+
 const mongoose = require("mongoose");
 const Blog = require("../../models/blog");
 const DB_NAME = 'test_blogs';
