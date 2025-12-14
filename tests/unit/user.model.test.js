@@ -1,17 +1,14 @@
 const mongoose = require("mongoose");
 const User = require("../../models/user");
+const DB_NAME = 'test_users';
 
 describe("User Model - Password Hashing", () => {
 
   beforeAll(async () => {
-    await mongoose.connect(process.env.MONGO_URL, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
-  });
+  await mongoose.connect(`${process.env.MONGO_URL}/${DB_NAME}`);
+});
 
   afterAll(async () => {
-    await mongoose.connection.dropDatabase();
     await mongoose.connection.close();
   });
 

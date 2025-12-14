@@ -1,17 +1,14 @@
 const mongoose = require("mongoose");
 const Blog = require("../../models/blog");
+const DB_NAME = 'test_blogs';
 
 describe("Blog Model - Validation Rules", () => {
 
   beforeAll(async () => {
-    await mongoose.connect(process.env.MONGO_URL, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
-  });
+  await mongoose.connect(`${process.env.MONGO_URL}/${DB_NAME}`);
+});
 
   afterAll(async () => {
-    await mongoose.connection.dropDatabase();
     await mongoose.connection.close();
   });
 
