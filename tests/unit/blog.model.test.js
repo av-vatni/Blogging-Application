@@ -5,7 +5,7 @@ const DB_NAME = 'test_blogs';
 describe("Blog Model - Validation Rules", () => {
 
   beforeAll(async () => {
-  await mongoose.connect(`${process.env.MONGO_URL}/${DB_NAME}`);
+    await mongoose.connect(process.env.MONGO_URL);
 });
 
   afterAll(async () => {

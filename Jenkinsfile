@@ -41,15 +41,22 @@ pipeline{
             }
         }
 
-        stage('Push docker image'){
+        stage('Push docker image') {
             steps {
-                sh """ 
-                echo $DOCKERHUB_CREDS_PSW | docker login -u $DOCKERHUB_CREDS_USR --password-stdin
-                docker push ${IMAGE_NAME}:${BUILD_NUMBER}
-                docker push ${IMAGE_NAME}:latest
-                """
-            }
+                withCredentials([usernamePassword(
+                    credentialsId: 'dockerhub-creds-id',
+                    usernameVariable: 'DOCKER_USER',
+                    passwordVariable: 'DOCKER_PASS'
+        )]) {
+            sh '''
+              echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
+              docker push avvatni/bloggingapplication-app:${BUILD_NUMBER}
+              docker push avvatni/bloggingapplication-app:latest
+            '''
         }
+    }
+}
+
     }
     post {
         always {

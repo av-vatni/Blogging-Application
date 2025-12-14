@@ -5,8 +5,12 @@ const DB_NAME = 'test_users';
 describe("User Model - Password Hashing", () => {
 
   beforeAll(async () => {
-  await mongoose.connect(`${process.env.MONGO_URL}/${DB_NAME}`);
+  await mongoose.connect(process.env.MONGO_URL);
 });
+
+afterEach(async () => {
+    await mongoose.connection.collection('users').deleteMany({});
+  });
 
   afterAll(async () => {
     await mongoose.connection.close();
