@@ -62,7 +62,7 @@ pipeline{
                 sh ''' 
                 kubectl set image deployment/blogify-app \
                 blogify-app=avvatni/bloggingapplication-app:${BUILD_NUMBER} \
-                -n blogify-app
+                -n blogify-dev
                 '''
             }
         }
