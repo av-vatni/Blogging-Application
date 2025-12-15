@@ -47,15 +47,25 @@ pipeline{
                     credentialsId: 'dockerhub-creds-id',
                     usernameVariable: 'DOCKER_USER',
                     passwordVariable: 'DOCKER_PASS'
-        )]) {
+                )]) {
             sh '''
               echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
               docker push avvatni/bloggingapplication-app:${BUILD_NUMBER}
               docker push avvatni/bloggingapplication-app:latest
             '''
+            }
+            }
         }
-    }
-}
+
+        stage('Deploy to Kubernetes'){
+            steps{
+                sh ''' 
+                kubectl set image deployment/blogify-app \
+                blogify-app=avvatni/bloggingapplication-app:${BUILD_NUMBER} \
+                -n blogify-app
+                '''
+            }
+        }
 
     }
     post {
