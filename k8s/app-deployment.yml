@@ -15,7 +15,8 @@ spec:
     spec: 
       containers:
         - name: blogify-app
-          image: avvatni/bloggingapplication-app:latest
+          image: avvatni/bloggingapplication-app:0
+          imagePullPolicy: Always
           ports: 
             - containerPort: 8000
           env:

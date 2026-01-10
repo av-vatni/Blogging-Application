@@ -48,24 +48,48 @@ pipeline{
                     usernameVariable: 'DOCKER_USER',
                     passwordVariable: 'DOCKER_PASS'
                 )]) {
-            sh '''
-              echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
-              docker push avvatni/bloggingapplication-app:${BUILD_NUMBER}
-              docker push avvatni/bloggingapplication-app:latest
-            '''
-            }
+                    sh """
+                    echo "\$DOCKER_PASS" | docker login -u "\$DOCKER_USER" --password-stdin
+                    docker push ${IMAGE_NAME}:${BUILD_NUMBER}
+                    docker push ${IMAGE_NAME}:latest
+                    """
+                }
             }
         }
 
-        stage('Deploy to Kubernetes'){
-            steps{
-                sh ''' 
-                kubectl set image deployment/blogify-app \
-                blogify-app=avvatni/bloggingapplication-app:${BUILD_NUMBER} \
-                -n blogify-dev
-                '''
+        stage('Deploy to Kubernetes') {
+            steps {
+                sh """
+                set -e
+
+                NAMESPACE=blogify-dev
+                APP_NAME=blogify-app
+                IMAGE=${IMAGE_NAME}:${BUILD_NUMBER}
+
+                echo "▶ Ensuring namespace exists"
+                kubectl get ns \$NAMESPACE || kubectl create ns \$NAMESPACE
+
+                echo "▶ Applying secrets"
+                kubectl apply -f k8s/secrets.yml -n \$NAMESPACE
+
+                echo "▶ Deploying MongoDB"
+                kubectl apply -f k8s/mongo-deployment.yml -n \$NAMESPACE
+
+                echo "▶ Deploying application"
+                kubectl apply -f k8s/app-deployment.yml -n \$NAMESPACE
+                kubectl apply -f k8s/app-service.yml -n \$NAMESPACE
+
+                echo "▶ Updating image"
+                kubectl set image deployment/\$APP_NAME \\
+                \$APP_NAME=\$IMAGE \\
+                -n \$NAMESPACE
+
+                echo "▶ Waiting for rollout"
+                kubectl rollout status deployment/\$APP_NAME -n \$NAMESPACE --timeout=5m
+                """
             }
         }
+
 
     }
     post {
